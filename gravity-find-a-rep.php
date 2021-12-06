@@ -152,6 +152,7 @@ class GravityFindARep {
         $exists = isset($res[0]->errorCode);
         
         // Build Custom Confirmation
+        $confirmation.= '<style>.find-a-rep p { margin: 1rem 0; } .find-a-rep h3 { margin-bottom: 0; } .find-a-rep a { margin: 1rem 0; display: block; } .find-a-rep h4 { margin-bottom: 0; }</style>';
         $confirmation .= '<div class="find-a-rep">';
         // If Error Return No Rep Template
         if($exists) {
@@ -165,8 +166,8 @@ class GravityFindARep {
                 foreach( $res as $rep ) {
                     $confirmation .= '<div class="rep">';
                     $confirmation .= $rep->Company ? '<h3>' . $rep->Company . '</h3>' : '<h3>Company Name Not Available</h3>';
-                    $confirmation .= $rep->Name ? '<p> Name: ' . $rep->Name . '</p>' : "";
-                    $confirmation .= $rep->Email ? '<a href="mailto:' . $rep->Email . '">' . $rep->Email . '</a><br>' : "";
+                    $confirmation .= $rep->Name ? '<p>' . $rep->Name . '</p>' : "";
+                    $confirmation .= $rep->Email ? '<a href="mailto:' . $rep->Email . '">' . $rep->Email . '</a>' : "";
                     $confirmation .= $rep->Phone ? '<a href="tel:' . $rep->Phone . '">' . $rep->Phone . '</a>' : "";
                     if ($rep->Street || $rep->City || $rep->State || $rep->PostalCode || $rep->Country) {
                         $confirmation .= '<h4>Address: </h4><p>'; 
@@ -182,7 +183,7 @@ class GravityFindARep {
         }
         // End find-a-rep Container
         $confirmation .= '</div>';
-        $confirmation .= "<script>window.top.jQuery(document).on('gform_confirmation_loaded', function () { document.documentElement.scrollTo({ top: 0, behavior: 'smooth' }) } );</script>";
+        $confirmation .= "<script id='scroll-top' type='text/javascript'>window.top.jQuery(document).on('gform_confirmation_loaded', function () { document.documentElement.scrollTo({ top: 0, behavior: 'smooth' }) } );</script>";
         // Return Filtered Confirmation
         return $confirmation;
     }
