@@ -127,6 +127,7 @@ class GravityFindARep {
                 'state' => state($entry, $country),
                 'city' => rgar( $entry, '8' ),
                 'productLine' => rgar( $entry, '4' ),
+                'productSeries' => rgar( $entry, '14' ),
                 'industryType' => rgar( $entry, '5' )
             )
         );
