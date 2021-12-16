@@ -26,11 +26,11 @@ class GravityFindARep {
         add_action('admin_menu', array($this, 'add_admin_page'));
         add_action('admin_init', array($this, 'settings_fields') );
     }
-
+    // Create Settings Page In WP Admin
     function add_admin_page() {
         add_options_page( 'Find A Rep Settings', __('Find A Rep', 'gravfr'), 'manage_options', 'gravfr-settings-page', array($this, 'add_admin_html') );
     }
-
+    // Add Each Setting to Admin Page
     function settings_fields() {
         // API Call Settings
         add_settings_section( 'gravfr_section', "API Settings", null, 'gravfr-settings-page' );
@@ -50,17 +50,17 @@ class GravityFindARep {
         add_settings_field('gravfr-password', 'Password', array($this, 'textInputHtml'), 'gravfr-settings-page', 'gravfr_section', array('name' => 'gravfr-password'));
         register_setting('armfrplugin', 'gravfr-password', array('sanitize_callback' => 'sanitize_text_field', 'default' => NULL));
     }
-
+    // Use This Function for Text Inputs
     function textInputHtml($args) { ?>
         <input type="text" name="<?php echo $args['name']?>" value="<?php echo esc_attr(get_option($args['name']));?>">
     <?php
     }
-
+    // Use This Function For Username Inputs
     function usernameHtml() { ?>
         <input type="email" name="gravfr-username" value="<?php echo esc_attr(get_option('gravfr-username'));?>">
     <?php
     }
-
+    // Put Together The Form On Settings Page
     function add_admin_html() { ?>
         <div class="wrap">
             <h2><?php _e("Gravity Find A Rep Settings") ?></h2>
@@ -75,7 +75,7 @@ class GravityFindARep {
         </div>
     <?php
     }
-
+    // API Call For Find A Rep
     function custom_confirmation($confirmation, $form, $entry, $ajax) {
         // Setup Call For Token
         $params['grant_type'] = get_option('gravfr-grant-type');
@@ -97,7 +97,9 @@ class GravityFindARep {
             'body' => $query,
             'data' => ''
         ));
+        // Save Token To Variable As PHP Array
         $token = json_decode(wp_remote_retrieve_body( $getToken ), true);
+
         // Define Country Field As Variable
         $country = rgar( $entry, '10' );
         // Create Switch Case Function for Conditional Logic
@@ -115,9 +117,9 @@ class GravityFindARep {
                 default: return rgar( $entry, '9' );
             }
         }
-
+        // Define Product Line Field As Variable
         $productLine = rgar( $entry, '4' );
-
+        // Create Switch Case Function for Conditional Logic
         function series($entry, $productLine) {
             switch($productLine) {
                 case "Hot Water": 
@@ -160,8 +162,10 @@ class GravityFindARep {
         ) );
 
         GFCommon::log_debug( 'gform_confirmation: response => ' . print_r( $response, true ) );
-        // Decode Response for PHP
+
+        // Decode Response In PHP
         $res = json_decode( $response['body'] );
+
         // Define Variable for Error Responses
         $exists = isset($res[0]->errorCode);
         
@@ -172,7 +176,7 @@ class GravityFindARep {
         if($exists) {
             include 'templates/error.php';
         } else {
-            // If Response is Empty or if Name or Email is null And Country is null Return No Rep Template
+            // If Response is Empty or if Name or Email is null And Company is null Return No Rep Template
             if( empty($res) || ($res[0]->Name === null || $res[0]->Email === null) && $res[0]->Company === null ) {
                 include 'templates/error.php';
             } else {
@@ -197,6 +201,7 @@ class GravityFindARep {
         }
         // End find-a-rep Container
         $confirmation .= '</div>';
+        // Scroll To Top Of Form When Response Comes Through
         $confirmation .= "<script id='scroll-top' type='text/javascript'>window.top.jQuery(document).on('gform_confirmation_loaded', function () { document.documentElement.scrollTo({ top: 0, behavior: 'smooth' }) } );</script>";
         // Return Filtered Confirmation
         return $confirmation;
