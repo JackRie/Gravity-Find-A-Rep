@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Gravity Find a Rep
- * Plugin URI:        https://example.com
+ * Plugin URI:        https://github.com/JackRie/Gravity-Find-A-Rep
  * Description:       Integrate Gravity form with 3rd party API call to display find a rep information.
  * Version:           1.0.0
  * Requires at least: 5.2
@@ -10,7 +10,7 @@
  * Author URI:        https://fairlypainless.com/
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Update URI:        https://example.com
+ * Update URI:        https://github.com/JackRie/Gravity-Find-A-Rep
  * Text Domain:       gravfr
  * Domain Path:       /languages
  */
