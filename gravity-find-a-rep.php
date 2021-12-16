@@ -116,6 +116,19 @@ class GravityFindARep {
             }
         }
 
+        $productLine = rgar( $entry, '4' );
+
+        function series($entry, $productLine) {
+            switch($productLine) {
+                case "Hot Water": 
+                    return rgar( $entry, '15' );
+                break;
+                case "Pressure Temperature":
+                    return rgar( $entry, '14' );
+                break;
+            }
+        }
+
         // Use Token In Actual Call
         $post_url = $token['instance_url'] . '/services/apexrest/FindAccountRepService/V1';
         // Set Up Request Body With Form Fields
@@ -126,7 +139,8 @@ class GravityFindARep {
                 'postalCode' => rgar( $entry, '7' ),
                 'state' => state($entry, $country),
                 'city' => rgar( $entry, '8' ),
-                'productLine' => rgar( $entry, '4' ),
+                'productLine' => $productLine,
+                'productSeries' => series($entry, $productLine),
                 'industryType' => rgar( $entry, '5' )
             )
         );
